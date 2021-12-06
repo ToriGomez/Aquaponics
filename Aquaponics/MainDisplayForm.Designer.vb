@@ -134,7 +134,7 @@ Partial Class MainDisplayForm
         Me.Pump1Button = New System.Windows.Forms.Button()
         Me.AnalogRangesGroupBox = New System.Windows.Forms.GroupBox()
         Me.SaveLabel = New System.Windows.Forms.Label()
-        Me.SaverRangeButton = New System.Windows.Forms.Button()
+        Me.SaveRangeButton = New System.Windows.Forms.Button()
         Me.AnalogRangeComboBox = New System.Windows.Forms.ComboBox()
         Me.RedLLabel = New System.Windows.Forms.Label()
         Me.RedLTextBox = New System.Windows.Forms.TextBox()
@@ -1459,7 +1459,7 @@ Partial Class MainDisplayForm
         'AnalogRangesGroupBox
         '
         Me.AnalogRangesGroupBox.Controls.Add(Me.SaveLabel)
-        Me.AnalogRangesGroupBox.Controls.Add(Me.SaverRangeButton)
+        Me.AnalogRangesGroupBox.Controls.Add(Me.SaveRangeButton)
         Me.AnalogRangesGroupBox.Controls.Add(Me.AnalogRangeComboBox)
         Me.AnalogRangesGroupBox.Controls.Add(Me.RedLLabel)
         Me.AnalogRangesGroupBox.Controls.Add(Me.RedLTextBox)
@@ -1485,16 +1485,16 @@ Partial Class MainDisplayForm
         Me.SaveLabel.TabIndex = 36
         Me.SaveLabel.Text = "Values Saved"
         '
-        'SaverRangeButton
+        'SaveRangeButton
         '
-        Me.SaverRangeButton.BackColor = System.Drawing.Color.Transparent
-        Me.SaverRangeButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.SaverRangeButton.Location = New System.Drawing.Point(25, 126)
-        Me.SaverRangeButton.Name = "SaverRangeButton"
-        Me.SaverRangeButton.Size = New System.Drawing.Size(251, 54)
-        Me.SaverRangeButton.TabIndex = 6
-        Me.SaverRangeButton.Text = "SAVE RANGE"
-        Me.SaverRangeButton.UseVisualStyleBackColor = False
+        Me.SaveRangeButton.BackColor = System.Drawing.Color.Transparent
+        Me.SaveRangeButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.SaveRangeButton.Location = New System.Drawing.Point(25, 126)
+        Me.SaveRangeButton.Name = "SaveRangeButton"
+        Me.SaveRangeButton.Size = New System.Drawing.Size(251, 54)
+        Me.SaveRangeButton.TabIndex = 6
+        Me.SaveRangeButton.Text = "SAVE RANGE"
+        Me.SaveRangeButton.UseVisualStyleBackColor = False
         '
         'AnalogRangeComboBox
         '
@@ -2078,7 +2078,7 @@ Partial Class MainDisplayForm
     Friend WithEvents Pump2OutputButton As Button
     Friend WithEvents Pump2Label As Label
     Friend WithEvents SaveLabel As Label
-    Friend WithEvents SaverRangeButton As Button
+    Friend WithEvents SaveRangeButton As Button
     Friend WithEvents FishDisplayLightButton As Button
     Friend WithEvents FishDisplayLightLabel As Label
     Friend WithEvents GrowLightLabel As Label
