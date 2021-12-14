@@ -1909,7 +1909,7 @@ Partial Class MainDisplayForm
         '
         'Timer3
         '
-        Me.Timer3.Interval = 5000
+        Me.Timer3.Interval = 7000
         '
         'Timer4
         '

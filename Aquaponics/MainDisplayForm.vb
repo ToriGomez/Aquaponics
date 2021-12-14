@@ -114,7 +114,7 @@ Public Class MainDisplayForm
         DefaultRangeComboBox()                                                              'Adds the analog devices and sets the default ranges.
         SaveLabel.Visible = False                                                           'Hides the saving values label, to only show when save button is pressed.
         SaveRangeButton.Visible = False                                                     'Hides the saverange button so that blank ranges cannot be saved by accident.
-        Timer2.Enabled = False                                                              'Disables the Timers 2 and 3 so that they only tick when in need of operation.
+        Timer2.Enabled = False                                                              'Disables the Timers 2, 3, and 4 so that they only tick when in need of operation.
         Timer3.Enabled = False                                                              '-/
         Timer4.Enabled = False                                                              '/
 
@@ -154,11 +154,80 @@ Public Class MainDisplayForm
                 GreenAlert()                                                                'Calls the Green alert sub to display/update the values of all devices.
             Case = CInt(&H21)                                                               'Header value for when the PIC is in the yellow state.
                 YellowAlert()                                                               'Calls the Yellow alert sub to anaylze/display which of the analog devices have passed the yellow range.
+                DigitalByte()                                                               'Test all digital devices.
+                DigitalExtraByte()                                                          '-/
+                DigitalWaterLevelByte()                                                     '/
+                TimeOfLights()                                                              'Time of day test for the lights and also the fish feed time.
+                TimeofFeed()                                                                '/
             Case = CInt(&H31)                                                               'Header value from when the PIC is in the red state.
                 RedAlert()                                                                  'Calls the Red alert sub to analyze/display which of the devices have passed the red range or in digital bad state.
         End Select
         GreenAlert()                                                                        'Continues to analyze all the data being received.
         Timer1.Enabled = True                                                               'Re-Enables the Timer1 to continue analyzing.
+    End Sub
+
+
+
+
+    'Sub for when the Timer 2 is enabled. Used to wait for 5 minutues after the Motion Occured. This is so that the Lights of the growlight
+    'and the display are not going on and off repeadly and for the lights to remain on for a while then shut off at night.
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        sendByte(0) = &H97                                                                  'motion time end to enable on the grow lights.
+        PortWrite()                                                                         '/
+
+
+
+        If lightBoolean(0) = True Then                                                      'Displays to the user the state of the Fish/Display lights based
+            FishDisplayLightButton.BackColor = Color.Gray                                   'on the current outside light and start and end active time.
+            FishDisplayLightButton.Text = "OFF"                                             '------/
+        ElseIf lightBoolean(0) = False And lightBoolean(2) = True Then                      '-----/                                                    
+            FishDisplayLightButton.BackColor = Color.Green                                  '----/
+            FishDisplayLightButton.Text = "ON"                                              '---/
+        ElseIf lightBoolean(0) = False And lightBoolean(2) = False Then                     '--/
+            FishDisplayLightButton.BackColor = Color.Gray                                   '-/
+            FishDisplayLightButton.Text = "OFF"                                             '/
+        End If
+
+
+
+        If lightBoolean(1) = True Then                                                      'Displays to the user the state of the Grow lights based
+            GrowLightButton.BackColor = Color.Gray                                          'on the current outside light and start and end active time.
+            GrowLightButton.Text = "OFF"                                                    '------/
+        ElseIf lightBoolean(1) = False And lightBoolean(2) = True Then                      '-----/
+            GrowLightButton.BackColor = Color.Green                                         '----/
+            GrowLightButton.Text = "ON"                                                     '---/
+        ElseIf lightBoolean(1) = False And lightBoolean(2) = False Then                     '--/
+            FishDisplayLightButton.BackColor = Color.Gray                                   '-/
+            FishDisplayLightButton.Text = "OFF"                                             '/
+        End If
+        Timer2.Enabled = False                                                              'Disables the timer until the next time motion occurs.
+    End Sub
+
+
+
+
+    'Sub for intervals of 7 seconds. Used for the user to have the control hold for 7 seconds then turn back off again. 
+    'Controls used are the Fish Feeder control so that it will be "ON" for five seconds the control will return to default of being
+    'off. The second is the save label for the save ranges section. Turns off the label so that the user knows that it was saved to the program.
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+        Select Case sendByte(0)
+            Case &HFF
+                Pump1OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
+                Pump1OutputButton.Text = "OFF"                                              'that the pump 1 was on for 3 seconds
+                Timer3.Enabled = False                                                      'Disables Timer 3.
+        End Select
+
+
+
+        If FishFeederMainButton.BackColor = Color.Green Then                                'If the fish feed state is on, turn off the control.
+            FishFeederMainButton.BackColor = Color.Gray                                     '--/
+            FishFeederMainButton.Text = "OFF"                                               '-/
+            Timer3.Enabled = False                                                          '/
+        End If
+        If SaveLabel.Visible = True Then                                                    'If the save label is visible, turn off visibity.
+            SaveLabel.Visible = False                                                       '-/
+            Timer3.Enabled = False                                                          '/
+        End If
     End Sub
 
 
@@ -172,6 +241,92 @@ Public Class MainDisplayForm
         CheckForIllegalCrossThreadCalls = False                                             'Stops from catch calls on the wrong thread.
         CommButton.BackColor = Color.Green                                                  'Displays to the user that communication of the program is good.
         CommButton.Text = "GOOD"                                                            '/
+    End Sub
+
+
+
+
+    'Sub for when one of the maunal controls was pressed. Triggers after three seconds, turns off the designated control.
+    Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
+        Select Case sendByte(0)
+            Case &HD1
+                sendByte(0) = &HE0                                                          'Transmit to PIC to turn off Pump 1.
+                PortWrite()                                                                 '/
+                Pump1OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
+                Pump1OutputButton.Text = "OFF"                                              'that the pump 1 was on for 3 seconds
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD3
+                sendByte(0) = &HE1                                                          'Transmit to PIC to turn off Pump 2.
+                PortWrite()                                                                 '/
+                Pump2OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
+                Pump2OutputButton.Text = "OFF"                                              'that the pump 2 was on for 3 seconds
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD5
+                sendByte(0) = &HE2                                                          'Transmit to PIC to turn off Pump 3.
+                PortWrite()                                                                 '/
+                Pump3OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
+                Pump3OutputButton.Text = "OFF"                                              'that the pump 3 was on for 3 seconds
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD7
+                sendByte(0) = &HE3                                                          'Transmit to PIC to turn off Fish Heater.
+                PortWrite()                                                                 '/
+                FishHeaterOutputButton.BackColor = Color.Gray                               'Turns off the test controls so that the user knows
+                FishHeaterOutputButton.Text = "OFF"                                         'that the Fish Heater was on for 3 seconds
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD9
+                sendByte(0) = &HE4                                                          'Transmit to PIC to turn off Reservoir Heater.
+                PortWrite()                                                                 '/
+                ResHeaterOutputButton.BackColor = Color.Gray                                'Turns off the test controls so that the user knows
+                ResHeaterOutputButton.Text = "OFF"                                          'that the Reservoir Heater was on for 3 seconds
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HDD
+                sendByte(0) = &HE5                                                          'Transmit to PIC to turn off Grow Light.
+                PortWrite()                                                                 '/
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HDF
+                sendByte(0) = &HE6                                                          'Transmit to PIC to turn off Fish Light.
+                PortWrite()                                                                 '/
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD2
+                sendByte(0) = &HE7                                                          'Transmit to PIC to turn off Stack Light Green light.
+                PortWrite()                                                                 '/
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD4
+                sendByte(0) = &HE8                                                          'Transmit to PIC to turn off Stack Light Yellow light.
+                PortWrite()                                                                 '/
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+
+
+
+            Case &HD6
+                sendByte(0) = &HE9                                                          'Transmit to PIC to turn off Stack Light Red light.
+                PortWrite()                                                                 '/
+                Timer4.Enabled = False                                                      'Disables Timer 4.
+        End Select
     End Sub
 
 
@@ -387,7 +542,7 @@ Public Class MainDisplayForm
         PortWrite()                                                                         '/
         Pump1OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
         Pump1OutputButton.Text = "ON"                                                       'that the pump 1 is on for 3 seconds
-        Timer4.Enabled = True                                                               '
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 5 seconds
     End Sub
 
 
@@ -399,7 +554,7 @@ Public Class MainDisplayForm
         PortWrite()                                                                         '/
         Pump2OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
         Pump2OutputButton.Text = "ON"                                                       'that the pump 2 is on for 3 seconds
-        Timer4.Enabled = True                                                               '
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 5 seconds
     End Sub
 
 
@@ -411,7 +566,7 @@ Public Class MainDisplayForm
         PortWrite()                                                                         '/
         Pump3OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
         Pump3OutputButton.Text = "ON"                                                       'that the pump 3 is on for 3 seconds
-        Timer4.Enabled = True                                                               '
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 5 seconds
     End Sub
 
 
@@ -422,8 +577,8 @@ Public Class MainDisplayForm
         sendByte(0) = &HD7                                                                  'Transmit to PIC to turn on Fish Tank Heater.
         PortWrite()                                                                         '/
         FishHeaterOutputButton.BackColor = Color.Green                                      'Turns on the test controls so that the user knows
-        FishHeaterOutputButton.Text = "ON"                                                  'that the Fish Feeder is on for 3 seconds
-        Timer4.Enabled = True                                                               '
+        FishHeaterOutputButton.Text = "ON"                                                  'that the Fish Feeder is ON 
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -433,6 +588,9 @@ Public Class MainDisplayForm
     Private Sub ResHeaterButton_Click(sender As Object, e As EventArgs) Handles ResHeaterButton.Click
         sendByte(0) = &HD9                                                                  'Transmit to PIC to turn on Reservoir Heater.
         PortWrite()                                                                         '/
+        ResHeaterOutputButton.BackColor = Color.Green                                      'Turns on the test controls so that the user knows
+        ResHeaterOutputButton.Text = "ON"                                                  'that the reservoir Heater is ON 
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -442,6 +600,9 @@ Public Class MainDisplayForm
     Private Sub FishFeederButton_Click(sender As Object, e As EventArgs) Handles FishFeederButton.Click
         sendByte(0) = &HFF                                                                  'Transmit to PIC to turn on Fish Feeder.
         PortWrite()                                                                         '/
+        FishFeederOutputButton.BackColor = Color.Green                                      'Turns on the test controls so that the user knows
+        FishFeederOutputButton.Text = "ON"                                                  'that the Fish Feeder is ON 
+        Timer3.Enabled = True                                                               'Enables Timer 4 to display for 7 seconds
     End Sub
 
 
@@ -451,6 +612,7 @@ Public Class MainDisplayForm
     Private Sub GrowLightControlButton_Click(sender As Object, e As EventArgs) Handles GrowLightControlButton.Click
         sendByte(0) = &HDD                                                                  'Transmit to PIC to turn on Grow Light.
         PortWrite()                                                                         '/
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -460,6 +622,7 @@ Public Class MainDisplayForm
     Private Sub FishLightButton_Click(sender As Object, e As EventArgs) Handles FishLightButton.Click
         sendByte(0) = &HDF                                                                  'Transmit to PIC to turn on Fish Light.
         PortWrite()                                                                         '/
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -469,6 +632,7 @@ Public Class MainDisplayForm
     Private Sub StackLightGButton_Click(sender As Object, e As EventArgs) Handles StackLightGButton.Click
         sendByte(0) = &HD2                                                                  'Transmit to PIC to turn on Stack Light Green Light.
         PortWrite()                                                                         '/
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -478,6 +642,7 @@ Public Class MainDisplayForm
     Private Sub StackLightYButton_Click(sender As Object, e As EventArgs) Handles StackLightYButton.Click
         sendByte(0) = &HD4                                                                  'Transmit to PIC to turn on Stack Light Yellow Light.
         PortWrite()                                                                         '/
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -487,11 +652,10 @@ Public Class MainDisplayForm
     Private Sub StackLightRButton_Click(sender As Object, e As EventArgs) Handles StackLightRButton.Click
         sendByte(0) = &HD6                                                                  'Transmit to PIC to turn on Stack Light Red Light.
         PortWrite()                                                                         '/
+        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
-    Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
 
-    End Sub
 
 
     'Sub for when the program is transmitting data, tests if the serial communication has become bad, and will keep testing the port until it is fixed.
@@ -1987,43 +2151,6 @@ Public Class MainDisplayForm
 
 
 
-    'Sub for when the Timer 2 is enabled. Used to wait for 5 minutues after the Motion Occured. This is so that the Lights of the growlight
-    'and the display are not going on and off repeadly and for the lights to remain on for a while then shut off at night.
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        sendByte(0) = &H97                                                                  'motion time end to enable on the grow lights.
-        PortWrite()                                                                         '/
-
-
-
-        If lightBoolean(0) = True Then                                                      'Displays to the user the state of the Fish/Display lights based
-            FishDisplayLightButton.BackColor = Color.Gray                                   'on the current outside light and start and end active time.
-            FishDisplayLightButton.Text = "OFF"                                             '------/
-        ElseIf lightBoolean(0) = False And lightBoolean(2) = True Then                      '-----/                                                    
-            FishDisplayLightButton.BackColor = Color.Green                                  '----/
-            FishDisplayLightButton.Text = "ON"                                              '---/
-        ElseIf lightBoolean(0) = False And lightBoolean(2) = False Then                     '--/
-            FishDisplayLightButton.BackColor = Color.Gray                                   '-/
-            FishDisplayLightButton.Text = "OFF"                                             '/
-        End If
-
-
-
-        If lightBoolean(1) = True Then                                                      'Displays to the user the state of the Grow lights based
-            GrowLightButton.BackColor = Color.Gray                                          'on the current outside light and start and end active time.
-            GrowLightButton.Text = "OFF"                                                    '------/
-        ElseIf lightBoolean(1) = False And lightBoolean(2) = True Then                      '-----/
-            GrowLightButton.BackColor = Color.Green                                         '----/
-            GrowLightButton.Text = "ON"                                                     '---/
-        ElseIf lightBoolean(1) = False And lightBoolean(2) = False Then                     '--/
-            FishDisplayLightButton.BackColor = Color.Gray                                   '-/
-            FishDisplayLightButton.Text = "OFF"                                             '/
-        End If
-        Timer2.Enabled = False                                                              'Disables the timer until the next time motion occurs.
-    End Sub
-
-
-
-
     'Sub to determine when the Fish are Fed. If the fish feed boolean is true means that the fish feed time has not been changed by the user,
     'or the time inserted by the user was saved. Once the time of day matches the fish feed time, the program Transmitts to the PIC to feed the
     'fish. Once the fish are fed the program will allow user to feed again, but ideally the fish should be fed once a day. The amount of times
@@ -2051,7 +2178,7 @@ Public Class MainDisplayForm
 
 
 
-                        FishFeederMainButton.BackColor = Color.Green                        'Display of the Fish Feeder Control, Timer so that it is set green/on for 5 seconds
+                        FishFeederMainButton.BackColor = Color.Green                        'Display of the Fish Feeder Control, Timer so that it is set green/on for 7 seconds
                         FishFeederMainButton.Text = "ON"                                    'then timer interval sets it to gray/off. Turns off the boolean indicating that the 
                         Timer3.Enabled = True                                               'fish have been fed.
                         fishFoodTimeBoolean = False                                         '/
@@ -2074,7 +2201,7 @@ Public Class MainDisplayForm
 
 
 
-                    FishFeederMainButton.BackColor = Color.Green                            'Display of the Fish Feeder Control, Timer so that it is set green/on for 5 seconds
+                    FishFeederMainButton.BackColor = Color.Green                            'Display of the Fish Feeder Control, Timer so that it is set green/on for 7 seconds
                     FishFeederMainButton.Text = "ON"                                        'then timer interval sets it to gray/off. Turns off the boolean indicating that the
                     Timer3.Enabled = True                                                   'fish have been fed.
                     fishFoodTimeBoolean = False                                             '/
@@ -2104,7 +2231,7 @@ Public Class MainDisplayForm
 
 
 
-                        FishFeederMainButton.BackColor = Color.Green                        'Display of the Fish Feeder Control, Timer so that it is set green/on for 5 seconds
+                        FishFeederMainButton.BackColor = Color.Green                        'Display of the Fish Feeder Control, Timer so that it is set green/on for 7 seconds
                         FishFeederMainButton.Text = "ON"                                    'then timer interval sets it to gray/off. Turns off the boolean indicating that the
                         Timer3.Enabled = True                                               'fish have been fed.
                         fishFoodTimeBoolean = False                                         '/
@@ -2132,23 +2259,5 @@ Public Class MainDisplayForm
                 FeedAgainCheckBox.Visible = False                                           '-/
                 Timer3.Enabled = False                                                      '/
         End Select
-    End Sub
-
-
-
-
-    'Sub for intervals of 5 seconds. Used for the user to have the control hold for 5 seconds then turn back off again. 
-    'Controls used are the Fish Feeder control so that it will be "ON" for five seconds the control will return to default of being
-    'off. The second is the save label for the save ranges section. Turns off the label so that the user knows that it was saved to the program.
-    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        If FishFeederMainButton.BackColor = Color.Green Then                                'If the fish feed state is on, turn off the control.
-            FishFeederMainButton.BackColor = Color.Gray                                     '--/
-            FishFeederMainButton.Text = "OFF"                                               '-/
-            Timer3.Enabled = False                                                          '/
-        End If
-        If SaveLabel.Visible = True Then                                                    'If the save label is visible, turn off visibity.
-            SaveLabel.Visible = False                                                       '-/
-            Timer3.Enabled = False                                                          '/
-        End If
     End Sub
 End Class
