@@ -250,8 +250,6 @@ Public Class MainDisplayForm
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
         Select Case sendByte(0)
             Case &HD1
-                sendByte(0) = &HE0                                                          'Transmit to PIC to turn off Pump 1.
-                PortWrite()                                                                 '/
                 Pump1OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
                 Pump1OutputButton.Text = "OFF"                                              'that the pump 1 was on for 3 seconds
                 Timer4.Enabled = False                                                      'Disables Timer 4.
@@ -259,8 +257,6 @@ Public Class MainDisplayForm
 
 
             Case &HD3
-                sendByte(0) = &HE1                                                          'Transmit to PIC to turn off Pump 2.
-                PortWrite()                                                                 '/
                 Pump2OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
                 Pump2OutputButton.Text = "OFF"                                              'that the pump 2 was on for 3 seconds
                 Timer4.Enabled = False                                                      'Disables Timer 4.
@@ -268,8 +264,6 @@ Public Class MainDisplayForm
 
 
             Case &HD5
-                sendByte(0) = &HE2                                                          'Transmit to PIC to turn off Pump 3.
-                PortWrite()                                                                 '/
                 Pump3OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
                 Pump3OutputButton.Text = "OFF"                                              'that the pump 3 was on for 3 seconds
                 Timer4.Enabled = False                                                      'Disables Timer 4.
@@ -277,8 +271,6 @@ Public Class MainDisplayForm
 
 
             Case &HD7
-                sendByte(0) = &HE3                                                          'Transmit to PIC to turn off Fish Heater.
-                PortWrite()                                                                 '/
                 FishHeaterOutputButton.BackColor = Color.Gray                               'Turns off the test controls so that the user knows
                 FishHeaterOutputButton.Text = "OFF"                                         'that the Fish Heater was on for 3 seconds
                 Timer4.Enabled = False                                                      'Disables Timer 4.
@@ -286,45 +278,8 @@ Public Class MainDisplayForm
 
 
             Case &HD9
-                sendByte(0) = &HE4                                                          'Transmit to PIC to turn off Reservoir Heater.
-                PortWrite()                                                                 '/
                 ResHeaterOutputButton.BackColor = Color.Gray                                'Turns off the test controls so that the user knows
                 ResHeaterOutputButton.Text = "OFF"                                          'that the Reservoir Heater was on for 3 seconds
-                Timer4.Enabled = False                                                      'Disables Timer 4.
-
-
-
-            Case &HDD
-                sendByte(0) = &HE5                                                          'Transmit to PIC to turn off Grow Light.
-                PortWrite()                                                                 '/
-                Timer4.Enabled = False                                                      'Disables Timer 4.
-
-
-
-            Case &HDF
-                sendByte(0) = &HE6                                                          'Transmit to PIC to turn off Fish Light.
-                PortWrite()                                                                 '/
-                Timer4.Enabled = False                                                      'Disables Timer 4.
-
-
-
-            Case &HD2
-                sendByte(0) = &HE7                                                          'Transmit to PIC to turn off Stack Light Green light.
-                PortWrite()                                                                 '/
-                Timer4.Enabled = False                                                      'Disables Timer 4.
-
-
-
-            Case &HD4
-                sendByte(0) = &HE8                                                          'Transmit to PIC to turn off Stack Light Yellow light.
-                PortWrite()                                                                 '/
-                Timer4.Enabled = False                                                      'Disables Timer 4.
-
-
-
-            Case &HD6
-                sendByte(0) = &HE9                                                          'Transmit to PIC to turn off Stack Light Red light.
-                PortWrite()                                                                 '/
                 Timer4.Enabled = False                                                      'Disables Timer 4.
         End Select
     End Sub
@@ -612,7 +567,6 @@ Public Class MainDisplayForm
     Private Sub GrowLightControlButton_Click(sender As Object, e As EventArgs) Handles GrowLightControlButton.Click
         sendByte(0) = &HDD                                                                  'Transmit to PIC to turn on Grow Light.
         PortWrite()                                                                         '/
-        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -622,7 +576,6 @@ Public Class MainDisplayForm
     Private Sub FishLightButton_Click(sender As Object, e As EventArgs) Handles FishLightButton.Click
         sendByte(0) = &HDF                                                                  'Transmit to PIC to turn on Fish Light.
         PortWrite()                                                                         '/
-        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -632,7 +585,6 @@ Public Class MainDisplayForm
     Private Sub StackLightGButton_Click(sender As Object, e As EventArgs) Handles StackLightGButton.Click
         sendByte(0) = &HD2                                                                  'Transmit to PIC to turn on Stack Light Green Light.
         PortWrite()                                                                         '/
-        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -642,7 +594,6 @@ Public Class MainDisplayForm
     Private Sub StackLightYButton_Click(sender As Object, e As EventArgs) Handles StackLightYButton.Click
         sendByte(0) = &HD4                                                                  'Transmit to PIC to turn on Stack Light Yellow Light.
         PortWrite()                                                                         '/
-        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
@@ -652,7 +603,6 @@ Public Class MainDisplayForm
     Private Sub StackLightRButton_Click(sender As Object, e As EventArgs) Handles StackLightRButton.Click
         sendByte(0) = &HD6                                                                  'Transmit to PIC to turn on Stack Light Red Light.
         PortWrite()                                                                         '/
-        Timer4.Enabled = True                                                               'Enables Timer 4 to display for 3 seconds
     End Sub
 
 
