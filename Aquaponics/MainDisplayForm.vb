@@ -47,7 +47,7 @@ Imports System.Threading.Thread
 
 
 Public Class MainDisplayForm
-    Public serialPortNameString As String = "COM3"                                          'Global Dimension for the serial port connected.
+    Public serialPortNameString As String = "COM4"                                          'Global Dimension for the serial port connected.
     Public serialPortBaudRateInteger As Integer = 57600                                     'Global Dimension for the baud rate of the serial comm.
     Public serialPortDataBitsInteger As Integer = 8                                         'Global Dimension for the number of data bits for serical comm.
     Public receiveByte(21) As Byte                                                          'Global Dimension for the received data from serial comm.
@@ -77,7 +77,8 @@ Public Class MainDisplayForm
         SerialPort1.Close()                                                                 'Shut off port when form closed.
         Timer1.Enabled = False                                                              'Shut off timer 1.
         Timer2.Enabled = False                                                              'Shut off timer 2.
-        Timer2.Enabled = False                                                              'Shut off timer 3.
+        Timer3.Enabled = False                                                              'Shut off timer 3.
+        Timer4.Enabled = False                                                              'Shut off timer 4.
     End Sub
 
 
@@ -104,7 +105,7 @@ Public Class MainDisplayForm
 
 
 
-        Me.Height = 580                                                                     'Sets the default size of the form.
+        Me.Height = 600                                                                     'Sets the default size of the form.
         Me.Width = 750                                                                      '/
         CenterToScreen()                                                                    'Centers the form to look nice.
 
@@ -114,7 +115,8 @@ Public Class MainDisplayForm
         SaveLabel.Visible = False                                                           'Hides the saving values label, to only show when save button is pressed.
         SaveRangeButton.Visible = False                                                     'Hides the saverange button so that blank ranges cannot be saved by accident.
         Timer2.Enabled = False                                                              'Disables the Timers 2 and 3 so that they only tick when in need of operation.
-        Timer3.Enabled = False                                                              '/
+        Timer3.Enabled = False                                                              '-/
+        Timer4.Enabled = False                                                              '/
 
 
 
@@ -155,6 +157,7 @@ Public Class MainDisplayForm
             Case = CInt(&H31)                                                               'Header value from when the PIC is in the red state.
                 RedAlert()                                                                  'Calls the Red alert sub to analyze/display which of the devices have passed the red range or in digital bad state.
         End Select
+        GreenAlert()                                                                        'Continues to analyze all the data being received.
         Timer1.Enabled = True                                                               'Re-Enables the Timer1 to continue analyzing.
     End Sub
 
@@ -382,6 +385,9 @@ Public Class MainDisplayForm
     Private Sub Pump1Button_Click(sender As Object, e As EventArgs) Handles Pump1Button.Click
         sendByte(0) = &HD1                                                                  'Transmit to PIC to turn on Pump1.
         PortWrite()                                                                         '/
+        Pump1OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
+        Pump1OutputButton.Text = "ON"                                                       'that the pump 1 is on for 3 seconds
+        Timer4.Enabled = True                                                               '
     End Sub
 
 
@@ -391,6 +397,9 @@ Public Class MainDisplayForm
     Private Sub Pump2Button_Click(sender As Object, e As EventArgs) Handles Pump2Button.Click
         sendByte(0) = &HD3                                                                  'Transmit to PIC to turn on Pump2.
         PortWrite()                                                                         '/
+        Pump2OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
+        Pump2OutputButton.Text = "ON"                                                       'that the pump 2 is on for 3 seconds
+        Timer4.Enabled = True                                                               '
     End Sub
 
 
@@ -400,6 +409,9 @@ Public Class MainDisplayForm
     Private Sub Pump3Button_Click(sender As Object, e As EventArgs) Handles Pump3Button.Click
         sendByte(0) = &HD5                                                                  'Transmit to PIC to turn on Pump3.
         PortWrite()                                                                         '/
+        Pump3OutputButton.BackColor = Color.Green                                           'Turns on the test controls so that the user knows
+        Pump3OutputButton.Text = "ON"                                                       'that the pump 3 is on for 3 seconds
+        Timer4.Enabled = True                                                               '
     End Sub
 
 
@@ -409,6 +421,9 @@ Public Class MainDisplayForm
     Private Sub FishHeaterButton_Click(sender As Object, e As EventArgs) Handles FishHeaterButton.Click
         sendByte(0) = &HD7                                                                  'Transmit to PIC to turn on Fish Tank Heater.
         PortWrite()                                                                         '/
+        FishHeaterOutputButton.BackColor = Color.Green                                      'Turns on the test controls so that the user knows
+        FishHeaterOutputButton.Text = "ON"                                                  'that the Fish Feeder is on for 3 seconds
+        Timer4.Enabled = True                                                               '
     End Sub
 
 
@@ -474,7 +489,9 @@ Public Class MainDisplayForm
         PortWrite()                                                                         '/
     End Sub
 
+    Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
 
+    End Sub
 
 
     'Sub for when the program is transmitting data, tests if the serial communication has become bad, and will keep testing the port until it is fixed.

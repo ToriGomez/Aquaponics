@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class MainDisplayForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class MainDisplayForm
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
@@ -29,6 +29,7 @@ Partial Class MainDisplayForm
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.FishFoodGroupBox = New System.Windows.Forms.GroupBox()
+        Me.FishFoodAlertLabel = New System.Windows.Forms.Label()
         Me.FeedAgainCheckBox = New System.Windows.Forms.CheckBox()
         Me.SaveTimeButton = New System.Windows.Forms.Button()
         Me.FishFoodButton = New System.Windows.Forms.Button()
@@ -171,7 +172,7 @@ Partial Class MainDisplayForm
         Me.DigByte0CheckBox = New System.Windows.Forms.CheckBox()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
-        Me.FishFoodAlertLabel = New System.Windows.Forms.Label()
+        Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FishFoodGroupBox.SuspendLayout()
@@ -202,7 +203,7 @@ Partial Class MainDisplayForm
         Me.TabControl1.Location = New System.Drawing.Point(-1, 0)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(2323, 1441)
+        Me.TabControl1.Size = New System.Drawing.Size(1981, 1317)
         Me.TabControl1.TabIndex = 0
         Me.TabControl1.TabStop = False
         '
@@ -219,7 +220,7 @@ Partial Class MainDisplayForm
         Me.TabPage1.Location = New System.Drawing.Point(10, 48)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(2303, 1383)
+        Me.TabPage1.Size = New System.Drawing.Size(1961, 1259)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "MAIN"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -232,17 +233,26 @@ Partial Class MainDisplayForm
         Me.FishFoodGroupBox.Controls.Add(Me.FishFoodButton)
         Me.FishFoodGroupBox.Controls.Add(Me.FishFoodLabel)
         Me.FishFoodGroupBox.Controls.Add(Me.FoodTimeTextBox)
-        Me.FishFoodGroupBox.Location = New System.Drawing.Point(1272, 788)
+        Me.FishFoodGroupBox.Location = New System.Drawing.Point(760, 1028)
         Me.FishFoodGroupBox.Name = "FishFoodGroupBox"
-        Me.FishFoodGroupBox.Size = New System.Drawing.Size(605, 319)
+        Me.FishFoodGroupBox.Size = New System.Drawing.Size(1171, 205)
         Me.FishFoodGroupBox.TabIndex = 36
         Me.FishFoodGroupBox.TabStop = False
         Me.FishFoodGroupBox.Text = "FISH FOOD"
         '
+        'FishFoodAlertLabel
+        '
+        Me.FishFoodAlertLabel.AutoSize = True
+        Me.FishFoodAlertLabel.Location = New System.Drawing.Point(28, 103)
+        Me.FishFoodAlertLabel.Name = "FishFoodAlertLabel"
+        Me.FishFoodAlertLabel.Size = New System.Drawing.Size(258, 32)
+        Me.FishFoodAlertLabel.TabIndex = 37
+        Me.FishFoodAlertLabel.Text = "Insert VALID time..."
+        '
         'FeedAgainCheckBox
         '
         Me.FeedAgainCheckBox.AutoSize = True
-        Me.FeedAgainCheckBox.Location = New System.Drawing.Point(34, 161)
+        Me.FeedAgainCheckBox.Location = New System.Drawing.Point(709, 146)
         Me.FeedAgainCheckBox.Name = "FeedAgainCheckBox"
         Me.FeedAgainCheckBox.Size = New System.Drawing.Size(222, 36)
         Me.FeedAgainCheckBox.TabIndex = 36
@@ -267,7 +277,7 @@ Partial Class MainDisplayForm
         Me.FishFoodButton.Enabled = False
         Me.FishFoodButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.9!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FishFoodButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.FishFoodButton.Location = New System.Drawing.Point(58, 222)
+        Me.FishFoodButton.Location = New System.Drawing.Point(660, 53)
         Me.FishFoodButton.Name = "FishFoodButton"
         Me.FishFoodButton.Size = New System.Drawing.Size(462, 64)
         Me.FishFoodButton.TabIndex = 35
@@ -918,11 +928,11 @@ Partial Class MainDisplayForm
         'Flowmeter4Label
         '
         Me.Flowmeter4Label.AutoSize = True
-        Me.Flowmeter4Label.Location = New System.Drawing.Point(8, 355)
+        Me.Flowmeter4Label.Location = New System.Drawing.Point(55, 359)
         Me.Flowmeter4Label.Name = "Flowmeter4Label"
-        Me.Flowmeter4Label.Size = New System.Drawing.Size(254, 32)
+        Me.Flowmeter4Label.Size = New System.Drawing.Size(207, 32)
         Me.Flowmeter4Label.TabIndex = 10
-        Me.Flowmeter4Label.Text = "RESERVOIR OUT:"
+        Me.Flowmeter4Label.Text = "PLANT DRAIN:"
         '
         'FlowMeter3Button
         '
@@ -1151,7 +1161,7 @@ Partial Class MainDisplayForm
         Me.TabPage2.Location = New System.Drawing.Point(10, 48)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(2303, 1383)
+        Me.TabPage2.Size = New System.Drawing.Size(1961, 1259)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TROUBLESHOOT"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -1901,21 +1911,16 @@ Partial Class MainDisplayForm
         '
         Me.Timer3.Interval = 5000
         '
-        'FishFoodAlertLabel
+        'Timer4
         '
-        Me.FishFoodAlertLabel.AutoSize = True
-        Me.FishFoodAlertLabel.Location = New System.Drawing.Point(28, 103)
-        Me.FishFoodAlertLabel.Name = "FishFoodAlertLabel"
-        Me.FishFoodAlertLabel.Size = New System.Drawing.Size(258, 32)
-        Me.FishFoodAlertLabel.TabIndex = 37
-        Me.FishFoodAlertLabel.Text = "Insert VALID time..."
+        Me.Timer4.Interval = 3000
         '
         'MainDisplayForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(16.0!, 31.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.AliceBlue
-        Me.ClientSize = New System.Drawing.Size(2317, 1438)
+        Me.ClientSize = New System.Drawing.Size(1981, 1319)
         Me.Controls.Add(Me.TabControl1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "MainDisplayForm"
@@ -2099,4 +2104,5 @@ Partial Class MainDisplayForm
     Friend WithEvents Timer3 As Timer
     Friend WithEvents OutputStatesGroupBox As GroupBox
     Friend WithEvents FishFoodAlertLabel As Label
+    Friend WithEvents Timer4 As Timer
 End Class
