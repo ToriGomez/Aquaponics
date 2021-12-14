@@ -154,11 +154,6 @@ Public Class MainDisplayForm
                 GreenAlert()                                                                'Calls the Green alert sub to display/update the values of all devices.
             Case = CInt(&H21)                                                               'Header value for when the PIC is in the yellow state.
                 YellowAlert()                                                               'Calls the Yellow alert sub to anaylze/display which of the analog devices have passed the yellow range.
-                DigitalByte()                                                               'Test all digital devices.
-                DigitalExtraByte()                                                          '-/
-                DigitalWaterLevelByte()                                                     '/
-                TimeOfLights()                                                              'Time of day test for the lights and also the fish feed time.
-                TimeofFeed()                                                                '/
             Case = CInt(&H31)                                                               'Header value from when the PIC is in the red state.
                 RedAlert()                                                                  'Calls the Red alert sub to analyze/display which of the devices have passed the red range or in digital bad state.
         End Select
