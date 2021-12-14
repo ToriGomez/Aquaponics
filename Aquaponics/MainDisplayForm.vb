@@ -1559,41 +1559,41 @@ Public Class MainDisplayForm
     Sub PlantBedPH(ByVal yellowHTextString As String, ByVal yellowLTextString As String, ByVal redHTextString As String, ByVal redLTextString As String)
         Try                                                                                 'Tests if the Ranges inserted are INVALID if so the ranges are set to the defaults.
             yellowHighSingle = CSng(yellowHTextString)                                      'If they are VALID then the ranges are set to the new values.
-        Catch ex As Exception                                                               '----------------------------/
-            yellowHighSingle = 7                                                            '---------------------------/
-        End Try                                                                             '--------------------------/
-        Try                                                                                 '-------------------------/
-            yellowLowSingle = CSng(yellowLTextString)                                       '------------------------/
-        Catch ex As Exception                                                               '-----------------------/
-            yellowLowSingle = 6.8                                                           '----------------------/
-        End Try                                                                             '---------------------/
-        Try                                                                                 '--------------------/
-            redHighSingle = CSng(redHTextString)                                            '-------------------/
-        Catch ex As Exception                                                               '------------------/
-            redHighSingle = 7.2                                                             '-----------------/
-        End Try                                                                             '----------------/
-        Try                                                                                 '---------------/
-            redLowSingle = CSng(redLTextString)                                             '--------------/
-            If redHighSingle < yellowHighSingle Or redLowSingle > yellowLowSingle Or        '-------------/
-                yellowLowSingle > yellowHighSingle Or redLowSingle > redHighSingle Then     '------------/
-                yellowHighSingle = 7                                                        '-----------/
-                yellowLowSingle = 6.8                                                       '----------/
-                redHighSingle = 7.2                                                         '---------/
-                redLowSingle = 6.6                                                          '--------/
+        Catch ex As Exception                                                               '---------------------------/
+            yellowHighSingle = 7                                                            '--------------------------/
+        End Try                                                                             '-------------------------/
+        Try                                                                                 '------------------------/
+            yellowLowSingle = CSng(yellowLTextString)                                       '-----------------------/
+        Catch ex As Exception                                                               '----------------------/
+            yellowLowSingle = 6.8                                                           '---------------------/
+        End Try                                                                             '--------------------/
+        Try                                                                                 '-------------------/
+            redHighSingle = CSng(redHTextString)                                            '------------------/
+        Catch ex As Exception                                                               '-----------------/
+            redHighSingle = 7.2                                                             '----------------/
+        End Try                                                                             '---------------/
+        Try                                                                                 '--------------/
+            redLowSingle = CSng(redLTextString)                                             '-------------/
+            If redHighSingle < yellowHighSingle Or redLowSingle > yellowLowSingle Or        '------------/
+                yellowLowSingle > yellowHighSingle Or redLowSingle > redHighSingle Then     '-----------/
+                yellowHighSingle = 7                                                        '----------/
+                yellowLowSingle = 6.8                                                       '---------/
+                redHighSingle = 7.2                                                         '--------/
+                redLowSingle = 6.6                                                          '-------/
             End If
-        Catch ex As Exception                                                               '-------/
-            redLowSingle = 6.6                                                              '------/
-        End Try                                                                             '-----/
-        rangeSaveSingle(28) = yellowHighSingle                                              '----/
-        rangeSaveSingle(29) = yellowLowSingle                                               '---/
-        rangeSaveSingle(30) = redHighSingle                                                 '--/
-        rangeSaveSingle(31) = redLowSingle                                                  '-/
-        analogRecHInteger = receiveByte(16)                                                 '/
+        Catch ex As Exception                                                               '------/
+            redLowSingle = 6.6                                                              '-----/
+        End Try                                                                             '----/
+        rangeSaveSingle(28) = yellowHighSingle                                              '---/
+        rangeSaveSingle(29) = yellowLowSingle                                               '--/
+        rangeSaveSingle(30) = redHighSingle                                                 '-/
+        rangeSaveSingle(31) = redLowSingle                                                  '/
 
 
 
-        analogRecLInteger = receiveByte(17)                                                 'Gets the analog value and with that value, the test analog data will
-        analogRecHInteger = analogRecHInteger * 4                                           'get the state the analog device is in.
+        analogRecHInteger = receiveByte(16)                                                 'Gets the analog value and with that value, the test analog data will
+        analogRecLInteger = receiveByte(17)                                                 'get the state the analog device is in.
+        analogRecHInteger = analogRecHInteger * 4                                           '-----/
         analogRecLInteger = analogRecLInteger \ 64                                          '----/
         analogRecInteger = analogRecHInteger + analogRecLInteger                            '---/
         colorStateColor = TestAnalogData(analogRecInteger, yellowHighSingle,                '--/
