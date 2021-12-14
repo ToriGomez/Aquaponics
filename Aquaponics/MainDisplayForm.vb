@@ -222,19 +222,6 @@ Public Class MainDisplayForm
 
 
 
-    'Sub for when the serial port has received serial communication. Reads the information and sets it to the receive byte array so that
-    'the information can be analyzed. Sets the Comm button to a good state so that the user knows that communictation from the program to
-    'and from the PIC is being received.
-    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        SerialPort1.Read(receiveByte, 0, 21)                                                'Reads the serial communication and sets it to the receive byte array to store data.
-        CheckForIllegalCrossThreadCalls = False                                             'Stops from catch calls on the wrong thread.
-        CommButton.BackColor = Color.Green                                                  'Displays to the user that communication of the program is good.
-        CommButton.Text = "GOOD"                                                            '/
-    End Sub
-
-
-
-
     'Sub for when one of the maunal controls was pressed. Triggers after three seconds, turns off the designated control.
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
         Select Case sendByte(0)
@@ -271,6 +258,19 @@ Public Class MainDisplayForm
                 ResHeaterOutputButton.Text = "OFF"                                          'that the Reservoir Heater was on for 3 seconds
                 Timer4.Enabled = False                                                      'Disables Timer 4.
         End Select
+    End Sub
+
+
+
+
+    'Sub for when the serial port has received serial communication. Reads the information and sets it to the receive byte array so that
+    'the information can be analyzed. Sets the Comm button to a good state so that the user knows that communictation from the program to
+    'and from the PIC is being received.
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        SerialPort1.Read(receiveByte, 0, 21)                                                'Reads the serial communication and sets it to the receive byte array to store data.
+        CheckForIllegalCrossThreadCalls = False                                             'Stops from catch calls on the wrong thread.
+        CommButton.BackColor = Color.Green                                                  'Displays to the user that communication of the program is good.
+        CommButton.Text = "GOOD"                                                            '/
     End Sub
 
 
