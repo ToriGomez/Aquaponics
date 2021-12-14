@@ -205,20 +205,14 @@ Public Class MainDisplayForm
     'Controls used are the Fish Feeder control so that it will be "ON" for five seconds the control will return to default of being
     'off. The second is the save label for the save ranges section. Turns off the label so that the user knows that it was saved to the program.
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        Select Case sendByte(0)
-            Case &HFF
-                Pump1OutputButton.BackColor = Color.Gray                                    'Turns off the test controls so that the user knows
-                Pump1OutputButton.Text = "OFF"                                              'that the pump 1 was on for 3 seconds
-                Timer3.Enabled = False                                                      'Disables Timer 3.
-        End Select
-
-
-
         If FishFeederMainButton.BackColor = Color.Green Then                                'If the fish feed state is on, turn off the control.
             FishFeederMainButton.BackColor = Color.Gray                                     '--/
             FishFeederMainButton.Text = "OFF"                                               '-/
             Timer3.Enabled = False                                                          '/
         End If
+
+
+
         If SaveLabel.Visible = True Then                                                    'If the save label is visible, turn off visibity.
             SaveLabel.Visible = False                                                       '-/
             Timer3.Enabled = False                                                          '/
