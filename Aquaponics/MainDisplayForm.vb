@@ -2070,8 +2070,8 @@ Public Class MainDisplayForm
 
                     FishDisplayLightButton.BackColor = Color.Green                          '-----------/
                     FishDisplayLightButton.Text = "ON"                                      '----------/
-                    FishDisplayLightButton.BackColor = Color.Gray                           '---------/
-                    FishDisplayLightButton.Text = "OFF"                                     '--------/
+                    GrowLightButton.BackColor = Color.Gray                                  '---------/
+                    GrowLightButton.Text = "OFF"                                            '--------/
                     Timer2.Enabled = True                                                   '-------/
                 End If
 
